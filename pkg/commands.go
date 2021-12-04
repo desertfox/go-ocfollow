@@ -8,7 +8,12 @@ import (
 )
 
 func (m Model) getPodCmd() tea.Cmd {
-	pod, _ := m.clientset.CoreV1().Pods(m.namespace).Get(context.TODO(), m.podName, metav1.GetOptions{})
+	pod, err := m.clientset.CoreV1().Pods(m.namespace).Get(context.TODO(), m.podName, metav1.GetOptions{})
+	if err != nil {
+		return func() tea.Msg {
+			return err
+		}
+	}
 	return func() tea.Msg {
 		return pod
 	}
