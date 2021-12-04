@@ -25,7 +25,7 @@ func (m Model) getPodCmd() tea.Cmd {
 func (m Model) getPodDescribeCmd() tea.Cmd {
 	podDescribeClient := describe.PodDescriber{Interface: m.clientset}
 
-	description, err := podDescribeClient.Describe("test", "test", describe.DescriberSettings{})
+	description, err := podDescribeClient.Describe(m.namespace, m.podName, describe.DescriberSettings{})
 
 	if err != nil {
 		return func() tea.Msg {
