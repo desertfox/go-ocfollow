@@ -1,14 +1,17 @@
 package ocfollow
 
 import (
+	"fmt"
 	"testing"
 
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
+	"k8s.io/kubectl/pkg/describe"
 )
 
 func TestGetPodCmd(t *testing.T) {
+
 	clientset := fake.NewSimpleClientset(
 		&v1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
@@ -18,6 +21,12 @@ func TestGetPodCmd(t *testing.T) {
 			},
 		},
 	)
+
+	podDescribeClient := describe.PodDescriber{clientset}
+
+	description, _ := podDescribeClient.Describe("test", "test", describe.DescriberSettings{})
+
+	fmt.Printf("%v\n", description)
 
 	m := newTestModel("test", "test", clientset)
 
