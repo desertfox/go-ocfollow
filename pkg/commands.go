@@ -1,9 +1,12 @@
 package ocfollow
 
 import (
+	"bytes"
 	"context"
+	"io"
 
 	tea "github.com/charmbracelet/bubbletea"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/kubectl/pkg/describe"
 )
@@ -35,5 +38,18 @@ func (m Model) getPodDescribeCmd() tea.Cmd {
 	return func() tea.Msg {
 		return podDescribeMsg(description)
 	}
+}
 
+func (m Model) getPodLogsCmd() tea.Cmd {
+	req := m.clientset.CoreV1().Pods(m.namespace).GetLogs(m.podName, &v1.PodLogOptions{})
+
+	podLogs, _ := req.Stream(context.TODO())
+	defer podLogs.Close()
+
+	buf := new(bytes.Buffer)
+	_, _ = io.Copy(buf, podLogs)
+
+	return func() tea.Msg {
+		return buf.String()
+	}
 }

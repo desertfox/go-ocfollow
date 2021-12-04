@@ -61,3 +61,25 @@ func TestGetPodDescribeCmd(t *testing.T) {
 	}
 
 }
+
+func TestGetPodLogsCmd(t *testing.T) {
+
+	clientset := fake.NewSimpleClientset(
+		&v1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:        "test",
+				Namespace:   "test",
+				Annotations: map[string]string{},
+			},
+		},
+	)
+
+	m := newTestModel("test", "test", clientset)
+
+	cmd := m.getPodLogsCmd()
+
+	got := cmd()
+
+	fmt.Printf("%v", got)
+
+}
