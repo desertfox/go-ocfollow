@@ -1,9 +1,13 @@
 package ocfollow
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"fmt"
+
+	"github.com/charmbracelet/lipgloss"
+)
 
 func (m Model) View() string {
-	if m.pod == "" {
+	if m.podName == "" {
 		return m.list.View()
 	}
 
@@ -15,7 +19,7 @@ func (m Model) View() string {
 }
 
 func (m Model) showPodDescribe() string {
-	return "describe"
+	return fmt.Sprintf("%v", m.pod)
 }
 
 func (m Model) showPodLogs() string {

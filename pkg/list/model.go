@@ -16,11 +16,21 @@ func (m Model) Init() tea.Cmd {
 }
 
 func (m *Model) cursorUp() {
-	m.cursor++
+	m.cursor--
+	if m.cursor < 0 {
+		m.resetCursor()
+	}
 }
 
 func (m *Model) cursorDown() {
-	m.cursor--
+	m.cursor++
+	if m.cursor > len(m.pods)-1 {
+		m.resetCursor()
+	}
+}
+
+func (m *Model) resetCursor() {
+	m.cursor = 0
 }
 
 func (m Model) GetCursor() string {
