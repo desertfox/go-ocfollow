@@ -17,6 +17,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.setPod(msg)
 	case podDescribeMsg:
 		m.handlePodDescribeMsg(msg)
+	case podLogsMsg:
+		m.handlePodLogsMsg(msg)
 	case error:
 		log.Fatal(msg.Error())
 		return m, tea.Quit
@@ -40,4 +42,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m *Model) handlePodDescribeMsg(pdm podDescribeMsg) {
 	m.describeStr = string(pdm)
+}
+
+func (m *Model) handlePodLogsMsg(pl podLogsMsg) {
+	m.podLogs = string(pl)
 }

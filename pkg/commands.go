@@ -12,6 +12,7 @@ import (
 )
 
 type podDescribeMsg string
+type podLogsMsg string
 
 func (m Model) getPodCmd() tea.Cmd {
 	pod, err := m.clientset.CoreV1().Pods(m.namespace).Get(context.TODO(), m.podName, metav1.GetOptions{})
@@ -50,6 +51,6 @@ func (m Model) getPodLogsCmd() tea.Cmd {
 	_, _ = io.Copy(buf, podLogs)
 
 	return func() tea.Msg {
-		return buf.String()
+		return podLogsMsg(buf.String())
 	}
 }

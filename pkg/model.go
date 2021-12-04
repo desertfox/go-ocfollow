@@ -14,12 +14,13 @@ type Model struct {
 
 	list        list.Model
 	describeStr string
+	podLogs     string
 
 	clientset kubernetes.Interface
 }
 
 func NewModel(n, p string, l list.Model, c kubernetes.Interface) Model {
-	return Model{n, p, &v1.Pod{}, l, "", c}
+	return Model{n, p, &v1.Pod{}, l, "", "", c}
 }
 
 func (m *Model) setPod(p *v1.Pod) {
