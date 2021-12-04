@@ -21,5 +21,5 @@ func (m Model) showPodDescribe() string {
 }
 
 func (m Model) showPodLogs() string {
-	return "logs"
+	return m.podLogs
 }
