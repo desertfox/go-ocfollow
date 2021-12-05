@@ -15,6 +15,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case *v1.Pod:
 		m.setPod(msg)
+	case *v1.PodList:
+		m.setPodList(msg)
 	case podDescribeMsg:
 		m.handlePodDescribeMsg(msg)
 	case podLogsMsg:

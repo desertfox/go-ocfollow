@@ -8,7 +8,6 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	ocfollow "github.com/desertfox/go-ocfollow/pkg"
-	"github.com/desertfox/go-ocfollow/pkg/list"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -29,7 +28,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	m := ocfollow.NewModel("", "", list.NewModel([]string{"test", "test2", "test3"}, 0), clientset)
+	m := ocfollow.NewModel(clientset)
 	p := tea.NewProgram(m, opts...)
 
 	f, err := tea.LogToFile("debug.log", "debug")

@@ -14,6 +14,18 @@ import (
 type podDescribeMsg string
 type podLogsMsg string
 
+func (m Model) getPodListCmd() tea.Cmd {
+	podList, err := m.clientset.CoreV1().Pods(m.namespace).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return func() tea.Msg {
+			return err
+		}
+	}
+	return func() tea.Msg {
+		return podList
+	}
+}
+
 func (m Model) getPodCmd() tea.Cmd {
 	pod, err := m.clientset.CoreV1().Pods(m.namespace).Get(context.TODO(), m.podName, metav1.GetOptions{})
 	if err != nil {

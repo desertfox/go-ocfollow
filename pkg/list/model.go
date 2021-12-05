@@ -1,10 +1,13 @@
 package list
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	tea "github.com/charmbracelet/bubbletea"
+	v1 "k8s.io/api/core/v1"
+)
 
 type Model struct {
-	pods   []string
-	cursor int
+	podNameList []string
+	cursor      int
 }
 
 func NewModel(p []string, c int) Model {
@@ -24,7 +27,7 @@ func (m *Model) cursorUp() {
 
 func (m *Model) cursorDown() {
 	m.cursor++
-	if m.cursor > len(m.pods)-1 {
+	if m.cursor > len(m.podNameList)-1 {
 		m.resetCursor()
 	}
 }
@@ -34,5 +37,14 @@ func (m *Model) resetCursor() {
 }
 
 func (m Model) GetCursor() string {
-	return m.pods[m.cursor]
+	return m.podNameList[m.cursor]
+}
+
+func (m *Model) setPodList(pl *v1.PodList) {
+	var podNameList []string
+	for _, pod := range pl.Items {
+		podNameList = append(podNameList, pod.Name)
+	}
+
+	m.podNameList = podNameList
 }

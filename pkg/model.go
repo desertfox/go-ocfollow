@@ -11,6 +11,7 @@ type Model struct {
 	namespace string
 	podName   string
 	pod       *v1.Pod
+	podList   *v1.PodList
 
 	list        list.Model
 	describeStr string
@@ -19,12 +20,16 @@ type Model struct {
 	clientset kubernetes.Interface
 }
 
-func NewModel(n, p string, l list.Model, c kubernetes.Interface) Model {
-	return Model{n, p, &v1.Pod{}, l, "", "", c}
+func NewModel(c kubernetes.Interface) Model {
+	return Model{"", "", &v1.Pod{}, &v1.PodList{}, list.Model{}, "", "", c}
 }
 
 func (m *Model) setPod(p *v1.Pod) {
 	m.pod = p
+}
+
+func (m *Model) setPodList(pl *v1.PodList) {
+	m.podList = pl
 }
 
 func (m *Model) setPodName(p string) {
@@ -36,5 +41,5 @@ func (m *Model) clearPod() {
 }
 
 func (m Model) Init() tea.Cmd {
-	return nil
+	return m.getPodListCmd()
 }
