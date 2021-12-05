@@ -28,7 +28,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch {
 		case key.Matches(msg, KeyMap.Select):
 			m.setPodName(m.list.GetCursor())
-			return m, m.getPodCmd()
+			return m, tea.Sequentially(
+				m.getPodCmd(),
+				m.getPodDescribeCmd(),
+				m.getPodLogsCmd(),
+			)
 		case key.Matches(msg, KeyMap.Back):
 			m.clearPod()
 		case key.Matches(msg, KeyMap.Quit):
