@@ -5,5 +5,5 @@ import (
 )
 
 func newTestModel(n, p string, clientset kubernetes.Interface) Model {
-	return NewModel(clientset)
+	return NewModel(n, clientset)
 }

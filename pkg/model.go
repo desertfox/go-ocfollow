@@ -20,8 +20,8 @@ type Model struct {
 	clientset kubernetes.Interface
 }
 
-func NewModel(c kubernetes.Interface) Model {
-	return Model{"", "", &v1.Pod{}, &v1.PodList{}, list.Model{}, "", "", c}
+func NewModel(n string, c kubernetes.Interface) Model {
+	return Model{n, "", &v1.Pod{}, &v1.PodList{}, list.Model{}, "", "", c}
 }
 
 func (m *Model) setPod(p *v1.Pod) {

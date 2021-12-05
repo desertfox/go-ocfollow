@@ -16,19 +16,12 @@ func main() {
 	var opts []tea.ProgramOption
 	opts = append(opts, tea.WithAltScreen())
 
-	kubeconfig := filepath.Join(os.Getenv("HOME"), ".kube", "config")
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
-	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
-	}
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		log.Fatal(err)
+	if len(os.Args) < 2 {
+		log.Fatal("Must pass namespace to ocfollow")
 		os.Exit(1)
 	}
 
-	m := ocfollow.NewModel(clientset)
+	m := ocfollow.NewModel(os.Args[1], buildClientSet())
 	p := tea.NewProgram(m, opts...)
 
 	f, err := tea.LogToFile("debug.log", "debug")
@@ -42,4 +35,20 @@ func main() {
 		log.Fatal(err)
 		os.Exit(1)
 	}
+}
+
+func buildClientSet() kubernetes.Interface {
+	kubeconfig := filepath.Join(os.Getenv("HOME"), ".kube", "config")
+	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	if err != nil {
+		log.Fatal(err)
+		os.Exit(1)
+	}
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		log.Fatal(err)
+		os.Exit(1)
+	}
+
+	return clientset
 }
