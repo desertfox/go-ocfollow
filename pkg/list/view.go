@@ -9,7 +9,7 @@ func (m Model) View() string {
 		if i == m.cursor {
 			output += fmt.Sprintf("-> %v\n", v)
 		} else {
-			output += fmt.Sprintf("%v\n", v)
+			output += fmt.Sprintf("   %v\n", v)
 		}
 	}
 

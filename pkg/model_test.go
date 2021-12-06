@@ -5,5 +5,9 @@ import (
 )
 
 func newTestModel(n, p string, clientset kubernetes.Interface) Model {
-	return NewModel(n, clientset)
+	m := NewModel(n, clientset)
+
+	m.podName = p
+
+	return m
 }

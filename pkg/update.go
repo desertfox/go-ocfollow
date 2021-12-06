@@ -15,6 +15,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case *v1.Pod:
 		m.setPod(msg)
+
+		return m, tea.Batch(
+			m.getPodDescribeCmd(),
+			m.getPodLogsCmd(),
+		)
 	case *v1.PodList:
 		m.setPodList(msg)
 	case podDescribeMsg:
@@ -28,11 +33,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch {
 		case key.Matches(msg, KeyMap.Select):
 			m.setPodName(m.list.GetCursor())
-			return m, tea.Sequentially(
-				m.getPodCmd(),
-				m.getPodDescribeCmd(),
-				m.getPodLogsCmd(),
-			)
+
+			return m, m.getPodCmd()
 		case key.Matches(msg, KeyMap.Back):
 			m.clearPod()
 		case key.Matches(msg, KeyMap.Quit):
